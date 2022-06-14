@@ -1,0 +1,32 @@
+name: Continuous Intergration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  PR_NUMBER: ${{ github.event.number }}
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test
+        id: test
+        run: |
+          cd ./app/
+          docker build --tag unittest . 
+          docker run -i --log-driver=none -a stdin -a stdout -a stderr --name test unittest; echo ::set-output name=exit_code::$?
+        
+      - name: Merge pull request
+        if: steps.test.outputs.exit_code == 0
+        run: |
+          curl -X PUT \
+          -H "Authorization: token ${{ secrets.PAT }}" \
+          https://api.github.com/repos/Personal-Project-Daman/docker-cicd/pulls/$PR_NUMBER/merge \
+          -d '{"commit_title":"auto-approval"}'
