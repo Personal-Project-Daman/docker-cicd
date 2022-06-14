@@ -21,7 +21,7 @@ def page(message):
 
 @app.route('/')
 def get_page():
-    message = "Hello!!! Welcome to the world of NordCloud :)"
+    message = "Hello!!! Welcome to the world of NordCloud ;)"
     return page(message)
 
 if __name__ == '__main__':
