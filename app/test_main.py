@@ -13,7 +13,7 @@ class TestMainPage(unittest.TestCase):
     
     def test_message(self):
         response = self.app.get('/')
-        message = main.page("Hello!!! Welcome to the world of NordCloud :)")
+        message = main.page("Hello!!! Welcome to the world of NordCloud ;)")
         self.assertEqual(response.data.decode("utf-8"), message)
 
 if __name__ == '__main__':
